@@ -5,10 +5,12 @@ import Button from './Button';
 import Card from './Card';
 import CardSection from './CardSection';
 import Header from './Header';
+import FormField from './FormField';
 
 export {
     Button,
     Card,
     CardSection,
-    Header
+    Header,
+    FormField
 };
