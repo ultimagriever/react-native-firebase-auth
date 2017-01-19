@@ -24,7 +24,7 @@ project.xcworkspace
 
 # Android/IntelliJ
 #
-build/
+# build/ - already declared above
 .idea
 .gradle
 local.properties
@@ -51,4 +51,3 @@ android/app/libs
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
-.idea
