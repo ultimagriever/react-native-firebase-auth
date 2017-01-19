@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Alert, Text } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import firebase from 'firebase';
-import { Button, Card, CardSection, FormField } from '../../components';
+import { Button, Card, CardSection, FormField, Spinner } from '../../components';
 import styles from './styles';
 
 export default class LoginForm extends Component {
@@ -14,16 +14,19 @@ export default class LoginForm extends Component {
   state = {
     email: '',
     password: '',
-    errorMessage: ''
+    errorMessage: '',
+    loading: false
   }
 
   handlePress({ email, password }) {
     const { alert } = Alert;
+    this.setState({ loading: true });
+
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then(user => {
           // User has logged in, welcome them to your app
 
-          this.setState({ errorMessage: '' });
+          this.setState({ errorMessage: '', loading: false });
           // eslint-disable-next-line
           alert('Welcome!', 'Thank you for signing in, ' + user.email);
         })
@@ -36,7 +39,7 @@ export default class LoginForm extends Component {
           firebase.auth().createUserWithEmailAndPassword(email, password)
               .then(user => alert('Thank you for signing up.'))
               .catch(error => {
-                alert('An error has occurred, please try again.');
+                alert('Error', 'An error has occurred.');
 
                 /*
                 If you would like, you can add some logic here to tell the user
@@ -77,10 +80,10 @@ export default class LoginForm extends Component {
                     errorMessage = 'This user has been disabled from the system. Please contact an administrator.';
                     break;
                   default:
-                    errorMessage = 'There has been an unknown error, please report to the developer.';
+                    errorMessage = 'Authentication failed.';
                 }
 
-                this.setState({ errorMessage });
+                this.setState({ errorMessage, loading: false });
               });
           /* eslint-enable */
         });
@@ -88,41 +91,50 @@ export default class LoginForm extends Component {
 
   render() {
     return (
-        <Card>
-          <CardSection>
-            <FormField
-                value={this.state.email}
-                onChangeText={email => this.setState({ email })}
-                placeholder="e.g. example@example.com"
-                autoCapitalize="none"
-                label="E-mail"
-            />
-          </CardSection>
+        <View>
+          <Card>
+            <CardSection>
+              <FormField
+                  value={this.state.email}
+                  onChangeText={email => this.setState({ email })}
+                  placeholder="e.g. example@example.com"
+                  autoCapitalize="none"
+                  label="E-mail"
+              />
+            </CardSection>
 
-          <CardSection>
-            <FormField
-                value={this.state.password}
-                onChangeText={password => this.setState({ password })}
-                placeholder="Password"
-                label="Password"
-                secureTextEntry
-            />
-          </CardSection>
+            <CardSection>
+              <FormField
+                  value={this.state.password}
+                  onChangeText={password => this.setState({ password })}
+                  placeholder="Password"
+                  label="Password"
+                  secureTextEntry
+              />
+            </CardSection>
 
-          {
-              this.state.errorMessage ? (
-                  <Text style={styles.error}>
-                    {this.state.errorMessage}
-                  </Text>
-              ) : null
-          }
+            {
+                this.state.errorMessage ? (
+                    <Text style={styles.error}>
+                      {this.state.errorMessage}
+                    </Text>
+                ) : null
+            }
 
-          <CardSection>
-            <Button onPress={() => this.handlePress({ ...this.state })}>
-              Log in
-            </Button>
-          </CardSection>
-        </Card>
+            <CardSection>
+              {
+                this.state.loading ? (
+                    <Spinner color="black" />
+                ) : (
+
+                    <Button onPress={() => this.handlePress({ ...this.state })}>
+                      Log in
+                    </Button>
+                )
+              }
+            </CardSection>
+          </Card>
+        </View>
     );
   }
 }

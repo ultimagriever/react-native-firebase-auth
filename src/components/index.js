@@ -6,11 +6,13 @@ import Card from './Card';
 import CardSection from './CardSection';
 import Header from './Header';
 import FormField from './FormField';
+import Spinner from './Spinner';
 
 export {
     Button,
     Card,
     CardSection,
     Header,
-    FormField
+    FormField,
+    Spinner
 };
