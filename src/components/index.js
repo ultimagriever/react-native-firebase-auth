@@ -7,6 +7,7 @@ import CardSection from './CardSection';
 import Header from './Header';
 import FormField from './FormField';
 import Spinner from './Spinner';
+import Welcome from './Welcome';
 
 export {
     Button,
@@ -14,5 +15,6 @@ export {
     CardSection,
     Header,
     FormField,
-    Spinner
+    Spinner,
+    Welcome
 };
